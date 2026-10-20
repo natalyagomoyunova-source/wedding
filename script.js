@@ -1,16 +1,11 @@
 (function () {
     'use strict';
 
+    // 1. Логика открытия конверта
     const envelopeWrapper = document.getElementById('envelopeContainer');
     const envelopeEl = document.getElementById('envelope');
     const waxSeal = document.getElementById('waxSeal');
     const mainContent = document.getElementById('mainContent');
-    const form = document.getElementById('rsvpForm');
-    const result = document.getElementById('formResult');
-    const submitBtn = form ? form.querySelector('button[type="submit"]') : null;
-
-    /* ---------- Открытие конверта ---------- */
-
     let opened = false;
 
     function openEnvelope() {
@@ -18,71 +13,111 @@
         opened = true;
 
         envelopeWrapper.classList.add('opened');
-        waxSeal.setAttribute('aria-hidden', 'true');
-        waxSeal.setAttribute('tabindex', '-1');
-
-        // Когда конверт улетел — показываем контент
-        window.setTimeout(() => {
+        
+        setTimeout(() => {
             document.body.classList.remove('no-scroll');
             document.body.classList.add('content-visible');
             mainContent.setAttribute('aria-hidden', 'false');
             envelopeWrapper.setAttribute('aria-hidden', 'true');
+            // Активируем первый блок, чтобы он сразу появился
+            document.querySelectorAll('.reveal')[0].classList.add('active');
         }, 1000);
     }
 
-    // Клик по всей поверхности конверта ИЛИ по печати — открывает приглашение.
-    // Печать — <button>, поэтому Enter/Space с клавиатуры тоже работают.
     if (envelopeEl) envelopeEl.addEventListener('click', openEnvelope);
 
-    // Дополнительно даём клавиатурный shortcut (Enter/Space) если фокус на обёртке
-    envelopeWrapper.addEventListener('keydown', (e) => {
-        if ((e.key === 'Enter' || e.key === ' ') && e.target === envelopeWrapper) {
-            e.preventDefault();
-            openEnvelope();
-        }
+    // 2. Анимация появления блоков при скролле
+    const revealElements = document.querySelectorAll('.reveal');
+
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+                observer.unobserve(entry.target); // Срабатывает один раз
+            }
+        });
+    }, {
+        threshold: 0.15 // Блок появляется, когда виден на 15%
     });
 
-    /* ---------- Отправка формы ---------- */
+    // Подключаем Observer только после открытия конверта (опционально)
+    // Но для простоты можно запустить сразу, он не будет мешать конверту
+    revealElements.forEach(el => revealObserver.observe(el));
 
-    if (!form) return;
 
-    function setResult(text, type) {
-        result.textContent = text;
-        result.className = 'form-result ' + (type || '');
+    // 3. Обратный отсчет (Таймер)
+    const targetDate = new Date('July 25, 2026 15:00:00').getTime();
+    const daysEl = document.getElementById('days');
+    const hoursEl = document.getElementById('hours');
+    const minutesEl = document.getElementById('minutes');
+    const secondsEl = document.getElementById('seconds');
+
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const distance = targetDate - now;
+
+        if (distance < 0) {
+            clearInterval(timerInterval);
+            return; // Если дата прошла
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        if(daysEl) daysEl.innerText = days < 10 ? '0' + days : days;
+        if(hoursEl) hoursEl.innerText = hours < 10 ? '0' + hours : hours;
+        if(minutesEl) minutesEl.innerText = minutes < 10 ? '0' + minutes : minutes;
+        if(secondsEl) secondsEl.innerText = seconds < 10 ? '0' + seconds : seconds;
     }
 
-    form.addEventListener('submit', async function (e) {
-        e.preventDefault();
+    const timerInterval = setInterval(updateCountdown, 1000);
+    updateCountdown();
 
-        // Простейшая клиентская валидация (submit с novalidate)
-        if (!form.checkValidity()) {
-            form.reportValidity();
-            return;
-        }
 
-        submitBtn.disabled = true;
-        setResult('Отправка…', 'loading');
+    // 4. Отправка формы RSVP
+    const form = document.getElementById('rsvpForm');
+    const result = document.getElementById('formResult');
+    const submitBtn = form ? form.querySelector('button[type="submit"]') : null;
 
-        const formData = new FormData(form);
+    if (form) {
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
 
-        try {
-            const response = await fetch('https://api.web3forms.com/submit', {
-                method: 'POST',
-                body: formData
-            });
-
-            const json = await response.json().catch(() => ({}));
-
-            if (response.ok && json.success) {
-                setResult('Спасибо! Ваш ответ получен. Ждём вас ❤', 'success');
-                form.reset();
-            } else {
-                setResult(json.message || 'Не удалось отправить форму. Попробуйте ещё раз.', 'error');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
             }
-        } catch (err) {
-            setResult('Ошибка сети. Проверьте интернет и попробуйте позже.', 'error');
-        } finally {
-            submitBtn.disabled = false;
-        }
-    });
+
+            submitBtn.disabled = true;
+            result.textContent = 'Отправка...';
+            result.className = 'form-result';
+
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const json = await response.json().catch(() => ({}));
+
+                if (response.ok && json.success) {
+                    result.textContent = 'Спасибо! Ваш ответ получен. Ждём вас ❤';
+                    result.className = 'form-result success';
+                    form.reset();
+                } else {
+                    result.textContent = json.message || 'Не удалось отправить. Попробуйте ещё раз.';
+                    result.className = 'form-result error';
+                }
+            } catch (err) {
+                result.textContent = 'Ошибка сети. Проверьте интернет.';
+                result.className = 'form-result error';
+            } finally {
+                submitBtn.disabled = false;
+            }
+        });
+    }
 })();

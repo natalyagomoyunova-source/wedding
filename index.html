@@ -4,119 +4,192 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Приглашение на нашу свадьбу — Иван и Мария</title>
-    <meta name="description" content="Приглашение на свадьбу Ивана и Марии — 25 июля 2026 года. Подтвердите своё присутствие.">
+    <meta name="description" content="Приглашение на свадьбу Ивана и Марии — 25 июля 2026 года.">
 
-        <!-- Open Graph для красивых превью в мессенджерах -->
+    <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="Приглашение на нашу свадьбу — Иван и Мария">
     <meta property="og:description" content="25 июля 2026. Будем рады видеть вас!">
     <meta property="og:url" content="https://natalyagomoyunova-source.github.io/wedding/">
     <meta property="og:image" content="https://natalyagomoyunova-source.github.io/wedding/images/polina.webp">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
 
-    <!-- Шрифты с поддержкой кириллицы -->
+    <!-- Шрифты -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Marck+Script&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Marck+Script&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="no-scroll">
 
-    <!-- Фоллбек, если JS отключён -->
-    <noscript>
-        <style>
-            .envelope-wrapper { display: none !important; }
-            .main-content { opacity: 1 !important; }
-            .cursive-text, .timeline li, .rsvp-section {
-                opacity: 1 !important;
-                transform: none !important;
-            }
-            body { overflow: auto !important; }
-        </style>
-    </noscript>
-
-    <!-- Экран 1: Конверт -->
-    <div class="envelope-wrapper" id="envelopeContainer" aria-label="Свадебное приглашение в конверте">
+    <!-- ЭКРАН 1: КОНВЕРТ -->
+    <div class="envelope-wrapper" id="envelopeContainer">
         <div class="envelope" id="envelope">
             <div class="envelope-flap" aria-hidden="true"></div>
-
             <div class="envelope-paper">
-                <!-- Чтобы поставить фото: замените блок .photo-placeholder на <img src="photo.jpg" alt="..." class="photo"> -->
-                <img src="images/polina.webp" alt="Наше фото в детстве" class="photo">
+                <div class="photo-placeholder">
+                    <!-- Ваше фото в конверте -->
+                    <img src="images/polina.webp" alt="Наше фото" class="photo">
+                </div>
             </div>
-
             <button class="wax-seal" id="waxSeal" type="button" aria-label="Открыть приглашение">
                 <span aria-hidden="true">❤</span>
             </button>
         </div>
-        <p class="hint-text">Нажмите на голубую печать, чтобы открыть приглашение</p>
+        <p class="hint-text">Нажмите на печать, чтобы открыть</p>
     </div>
 
-    <!-- Экран 2: Основной контент -->
+    <!-- ЭКРАН 2: ОСНОВНОЙ САЙТ -->
     <main class="main-content" id="mainContent" aria-hidden="true">
 
-        <section class="hero-section">
-            <h1 class="cursive-text">Наконец-то мы женимся!</h1>
-            <p class="names">Иван &amp; Мария</p>
-            <p class="date"><time datetime="2026-07-25">25 июля 2026</time></p>
+        <!-- Главный экран (Hero) -->
+        <section class="hero-section reveal">
+            <div class="hero-bg">
+                <!-- Замените ссылку на ваше горизонтальное фото, если хотите фон -->
+                <img src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1000&auto=format&fit=crop" alt="Фон" class="hero-img">
+                <div class="hero-overlay"></div>
+            </div>
+            <div class="hero-content">
+                <p class="subtitle">МЫ ЖЕНИМСЯ</p>
+                <h1 class="names">Иван <br><span>&</span><br> Мария</h1>
+                <p class="date">25 . 07 . 2026</p>
+            </div>
         </section>
 
-        <section class="timeline-section">
-            <h2>Программа дня</h2>
-            <ul class="timeline">
-                <li class="timeline-item">
-                    <time>15:00</time>
-                    <span>Торжественная регистрация</span>
-                </li>
-                <li class="timeline-item">
-                    <time>17:00</time>
-                    <span>Начало свадебного банкета</span>
-                </li>
-                <li class="timeline-item">
-                    <time>22:00</time>
-                    <span>Праздничный салют и торт</span>
-                </li>
-            </ul>
+        <!-- Вступительный текст -->
+        <section class="intro-section reveal">
+            <p class="small-caps">С ЛЮБОВЬЮ ПРИГЛАШАЕМ ВАС РАЗДЕЛИТЬ С НАМИ</p>
+            <h2 class="serif-title">Один день.<br>Наша вечность.</h2>
+            <p class="text-block">Мы очень счастливы пригласить вас на самое важное и трепетное событие в нашей жизни — нашу свадьбу!</p>
         </section>
 
-        <section class="rsvp-section">
-            <h2>Подтвердите своё присутствие</h2>
+        <!-- Таймер -->
+        <section class="countdown-section reveal">
+            <div class="countdown" id="countdown">
+                <div class="time-box">
+                    <span id="days">00</span>
+                    <p>дней</p>
+                </div>
+                <div class="time-box">
+                    <span id="hours">00</span>
+                    <p>часов</p>
+                </div>
+                <div class="time-box">
+                    <span id="minutes">00</span>
+                    <p>минут</p>
+                </div>
+                <div class="time-box">
+                    <span id="seconds">00</span>
+                    <p>секунд</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Программа дня (Темный фон) -->
+        <section class="timeline-section reveal dark-bg">
+            <h2 class="serif-title light-text">Программа дня</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <span class="time">15:00</span>
+                    <div class="desc">
+                        <h4>Сбор гостей</h4>
+                        <p>Приветственные напитки и фотосессия</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <span class="time">16:00</span>
+                    <div class="desc">
+                        <h4>Церемония</h4>
+                        <p>Торжественная регистрация брака</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <span class="time">18:00</span>
+                    <div class="desc">
+                        <h4>Банкет</h4>
+                        <p>Праздничный ужин, тосты и веселье</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <span class="time">22:00</span>
+                    <div class="desc">
+                        <h4>Салют и торт</h4>
+                        <p>Красивое завершение вечера</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Дресс-код -->
+        <section class="dresscode-section reveal">
+            <h2 class="serif-title">Дресс-код</h2>
+            <p class="text-block center">Мы будем рады, если вы поддержите цветовую гамму нашего торжества в своих нарядах.</p>
+            <div class="palette">
+                <div class="color-circle" style="background-color: #2b4353;" title="Темно-синий"></div>
+                <div class="color-circle" style="background-color: #7faec5;" title="Голубой"></div>
+                <div class="color-circle" style="background-color: #eae1da;" title="Бежевый"></div>
+                <div class="color-circle" style="background-color: #fcf8f5; border: 1px solid #ddd;" title="Белый"></div>
+            </div>
+        </section>
+
+        <!-- Анкета гостя (RSVP) -->
+        <section class="rsvp-section reveal">
+            <h2 class="serif-title">Анкета для гостей</h2>
+            <p class="text-block center">Пожалуйста, подтвердите свое присутствие до 15 июля 2026.</p>
+            
             <form action="https://api.web3forms.com/submit" method="POST" id="rsvpForm" novalidate>
-
-                <!-- Ключ Web3Forms. Не забудьте ограничить домены в личном кабинете! -->
                 <input type="hidden" name="access_key" value="c4f9700d-61ce-4774-a91b-668c7a88cb19">
                 <input type="hidden" name="subject" value="Ответ на свадебное приглашение">
-                <!-- Honeypot от ботов -->
-                <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off">
+                <input type="checkbox" name="botcheck" class="hidden" style="display:none">
 
                 <div class="form-group">
-                    <label for="name">Ваше Имя и Фамилия</label>
-                    <input type="text" id="name" name="Имя гостя" required placeholder="Иван Иванов" autocomplete="name">
+                    <label for="name">Имя и Фамилия</label>
+                    <input type="text" id="name" name="Имя гостя" required placeholder="Иван Иванов">
                 </div>
 
                 <div class="form-group">
-                    <label for="attendance">Сможете ли вы прийти?</label>
+                    <label for="attendance">Сможете ли вы присутствовать?</label>
                     <select id="attendance" name="Присутствие" required>
                         <option value="" disabled selected>Выберите ответ</option>
-                        <option value="Да, с удовольствием приду">Да, с удовольствием приду</option>
+                        <option value="Да, буду с радостью">Да, буду с радостью</option>
                         <option value="К сожалению, не смогу">К сожалению, не смогу</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label for="drink">Ваши предпочтения по напиткам</label>
+                    <label for="drink">Предпочтения по напиткам</label>
                     <input type="text" id="drink" name="Напитки" placeholder="Вино, виски, сок...">
                 </div>
 
-                <button type="submit" class="submit-btn">
-                    <span class="btn-text">Отправить ответ</span>
-                </button>
-
-                <div id="formResult" class="form-result" role="status" aria-live="polite"></div>
+                <button type="submit" class="submit-btn">Отправить ответ</button>
+                <div id="formResult" class="form-result" aria-live="polite"></div>
             </form>
         </section>
+
+        <!-- Место проведения -->
+        <section class="location-section reveal">
+            <h2 class="serif-title">Место проведения</h2>
+            <div class="location-card">
+                <!-- Замените картинку на фото вашего ресторана/локации -->
+                <img src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?q=80&w=600&auto=format&fit=crop" alt="Ресторан" class="loc-img">
+                <div class="loc-info">
+                    <h3>Villa Verde</h3>
+                    <p>Московская область, Одинцовский район</p>
+                    <a href="#" class="map-link" target="_blank">Посмотреть на карте</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Футер -->
+        <footer class="footer-section reveal dark-bg">
+            <h2 class="serif-title light-text">До встречи!</h2>
+            <p class="light-text text-block center">Если у вас есть вопросы, вы всегда можете связаться с нами:</p>
+            <div class="contact-info">
+                <p class="light-text">Мария: +7 (999) 123-45-67</p>
+                <p class="light-text">Иван: +7 (999) 765-43-21</p>
+            </div>
+            <p class="footer-date">25.07.2026</p>
+        </footer>
 
     </main>
 
