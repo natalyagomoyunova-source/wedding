@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Приглашение на нашу свадьбу — Иван и Мария</title>
+    <meta name="description" content="Приглашение на свадьбу Ивана и Марии — 25 июля 2026 года. Подтвердите своё присутствие.">
+
+    <!-- Open Graph для красивых превью в мессенджерах -->
+    <meta property="og:title" content="Приглашение на нашу свадьбу — Иван и Мария">
+    <meta property="og:description" content="25 июля 2026. Будем рады видеть вас!">
+    <meta property="og:type" content="website">
+    <!-- <meta property="og:image" content="https://ваш-домен.ru/preview.jpg"> -->
+
+    <!-- Шрифты с поддержкой кириллицы -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Marck+Script&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="no-scroll">
+
+    <!-- Фоллбек, если JS отключён -->
+    <noscript>
+        <style>
+            .envelope-wrapper { display: none !important; }
+            .main-content { opacity: 1 !important; }
+            .cursive-text, .timeline li, .rsvp-section {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+            body { overflow: auto !important; }
+        </style>
+    </noscript>
+
+    <!-- Экран 1: Конверт -->
+    <div class="envelope-wrapper" id="envelopeContainer" aria-label="Свадебное приглашение в конверте">
+        <div class="envelope" id="envelope">
+            <div class="envelope-flap" aria-hidden="true"></div>
+
+            <div class="envelope-paper">
+                <!-- Чтобы поставить фото: замените блок .photo-placeholder на <img src="photo.jpg" alt="..." class="photo"> -->
+                <div class="photo-placeholder">
+                    <span class="photo-text">Здесь наше фото в детстве ✨</span>
+                </div>
+            </div>
+
+            <button class="wax-seal" id="waxSeal" type="button" aria-label="Открыть приглашение">
+                <span aria-hidden="true">❤</span>
+            </button>
+        </div>
+        <p class="hint-text">Нажмите на голубую печать, чтобы открыть приглашение</p>
+    </div>
+
+    <!-- Экран 2: Основной контент -->
+    <main class="main-content" id="mainContent" aria-hidden="true">
+
+        <section class="hero-section">
+            <h1 class="cursive-text">Наконец-то мы женимся!</h1>
+            <p class="names">Иван &amp; Мария</p>
+            <p class="date"><time datetime="2026-07-25">25 июля 2026</time></p>
+        </section>
+
+        <section class="timeline-section">
+            <h2>Программа дня</h2>
+            <ul class="timeline">
+                <li class="timeline-item">
+                    <time>15:00</time>
+                    <span>Торжественная регистрация</span>
+                </li>
+                <li class="timeline-item">
+                    <time>17:00</time>
+                    <span>Начало свадебного банкета</span>
+                </li>
+                <li class="timeline-item">
+                    <time>22:00</time>
+                    <span>Праздничный салют и торт</span>
+                </li>
+            </ul>
+        </section>
+
+        <section class="rsvp-section">
+            <h2>Подтвердите своё присутствие</h2>
+            <form action="https://api.web3forms.com/submit" method="POST" id="rsvpForm" novalidate>
+
+                <!-- Ключ Web3Forms. Не забудьте ограничить домены в личном кабинете! -->
+                <input type="hidden" name="access_key" value="c4f9700d-61ce-4774-a91b-668c7a88cb19">
+                <input type="hidden" name="subject" value="Ответ на свадебное приглашение">
+                <!-- Honeypot от ботов -->
+                <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off">
+
+                <div class="form-group">
+                    <label for="name">Ваше Имя и Фамилия</label>
+                    <input type="text" id="name" name="Имя гостя" required placeholder="Иван Иванов" autocomplete="name">
+                </div>
+
+                <div class="form-group">
+                    <label for="attendance">Сможете ли вы прийти?</label>
+                    <select id="attendance" name="Присутствие" required>
+                        <option value="" disabled selected>Выберите ответ</option>
+                        <option value="Да, с удовольствием приду">Да, с удовольствием приду</option>
+                        <option value="К сожалению, не смогу">К сожалению, не смогу</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="drink">Ваши предпочтения по напиткам</label>
+                    <input type="text" id="drink" name="Напитки" placeholder="Вино, виски, сок...">
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    <span class="btn-text">Отправить ответ</span>
+                </button>
+
+                <div id="formResult" class="form-result" role="status" aria-live="polite"></div>
+            </form>
+        </section>
+
+    </main>
+
+    <script src="script.js" defer></script>
+</body>
+</html>
